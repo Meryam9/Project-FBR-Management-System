@@ -13,6 +13,8 @@ const int psize = 10; // Maximum Number of Properties
 string username[usize];
 string passwords[usize];
 string NIC[usize];
+string mails[usize];
+string cellNum[usize];
 string users[usize];
 long double taxCalculation[usize];
 string unit[psize];
@@ -98,7 +100,6 @@ int main()
                 cout << "** You entered invalid Credentials!." << endl;
             }
         }
-
         break;
         case 2:
         {
@@ -194,6 +195,7 @@ int main()
                 // Implementation of input choices
                 switch (input1)
                 {
+                // Case 1 to register user in the system
                 case 1:
                 {
                     cout << "** The ID of user : ";
@@ -202,10 +204,10 @@ int main()
                     index = ID - 1;
                     cin >> username[index];
                     cout << "** Enter Password: ";
-                    cin >> passwords[index];
-                    code=passwords[index];
+                    cin >> code;
                     if (validPasscode(code))
                     {
+                        passwords[index] = code;
                         cout << "** Enter CNIC (Don't enter hyphen): ";
                         cin >> cnic;
                         if (validCNIC(cnic))
@@ -215,29 +217,39 @@ int main()
                             cin >> cellNo;
                             if (validCellNo(cellNo))
                             {
+                                cellNum[index] = cellNo;
                                 cout << "** Enter e-mail: ";
                                 cin >> email;
                                 if (validEmail(email))
                                 {
+                                    email = mails[index];
                                     cout << "** User Registered Successfully!" << endl;
                                     validation = false;
                                 }
                                 else
                                 {
                                     cout << "** !! User Email Credentials are wrong !!" << endl;
-                                    cout << "** User will be registered witouht Email. " << endl;
+                                    username[index] = "0";
+                                    passwords[index] = "0";
+                                    NIC[index] = "0";
+                                    cellNum[index] = "0";
+                                    mails[index] = "0";
+                                    cout << "** The user you entered will not be registered." << endl;
                                 }
                             }
                             else
                             {
                                 cout << "** !! User Cell Number Credentials are wrong !!" << endl;
-                                cout << "** User will be registered witouht Cell Number. " << endl;
+                                username[index] = "0";
+                                passwords[index] = "0";
+                                NIC[index] = "0";
+                                cellNum[index] = "0";
+                                cout << "** The user you entered will not be registered." << endl;
                             }
                         }
                         else
                         {
                             cout << "** !! User CNIC Credentials are wrong !! " << endl;
-                            cout << "** This could result in serious issues. " << endl;
                             username[index] = "0";
                             passwords[index] = "0";
                             NIC[index] = "0";
@@ -255,6 +267,7 @@ int main()
                     ID++;
                 }
                 break;
+                // Case 2 to calculate user taxes in the system
                 case 2:
                 {
                     cout << "** Calculate Taxes: " << endl;
@@ -343,8 +356,8 @@ int main()
                         }
                     }
                 }
-
                 break;
+                // Case 3 to delete user account in the system
                 case 3:
                 {
                     cout << "** For Deletion of user account : " << endl;
@@ -358,18 +371,21 @@ int main()
                     {
                         username[index] = "0";
                         passwords[index] = "0";
+                        NIC[index] = "0";
+                        cellNum[index] = "0";
+                        mails[index] = "0";
                         cout << "** User deleted Successfully!";
                     }
                     else
                     {
                         cout << "** The User you entered is not registered!" << endl;
                     }
-                    //
-                    // index = index + 1;
                 }
                 break;
+                // Case 3 to update user account in the system
                 case 4:
                 {
+                    string userPassword, userCNIC, userMail;
                     cout << "** For Updation of user account : " << endl;
                     int ID;
                     cout << "** Enter ID of user (1 digit number only): ";
@@ -383,20 +399,57 @@ int main()
                         cin >> username[index];
                         cout << "** Enter the updted password: ";
                         cin >> passwords[index];
-                        cout << "** Enter user's CNIC: ";
-                        cin >> NIC[index];
-                        cout << "** User updated Successfully!";
+                        userPassword = passwords[index];
+                        if (validPasscode(userPassword))
+                        {
+                            cout << "** Enter user's CNIC: ";
+                            cin >> NIC[index];
+                            userCNIC = NIC[index];
+                            if (validCNIC(userCNIC))
+                            {
+                                cout << "** Enter user's E-mail: ";
+                                cin >> mails[index];
+                                userMail = mails[index];
+                                if (validEmail(userMail))
+                                {
+                                    cout << "** User updated Successfully!" << endl;
+                                }
+                                else
+                                {
+                                    cout << "** ! You entered invalid mail credentials. ! " << endl;
+                                    mails[index] = "0";
+                                    cout << "** ! User email will have a null value. " << endl;
+                                    cout << "** Choose update option again to resolve this issue. ! " << endl;
+                                }
+                            }
+                            else
+                            {
+                                cout << "** ! You entered invalid CNIC credentials. ! " << endl;
+                                NIC[index] = "0";
+                                cout << "** ! User CNIC will have a null value. " << endl;
+                                cout << "** Choose update option again to resolve this issue. ! " << endl;
+                            }
+                        }
+                        else
+                        {
+                            cout << "** ! Password must consists of 8 characters !" << endl;
+                            passwords[index] = "0";
+                            cout << "** ! User password will have a null value. " << endl;
+                            cout << "** Choose update option again to resolve this issue. ! " << endl;
+                        }
                     }
                     else
                     {
-                        cout << "** The User you entered is not registered!" << endl;
+                        cout << "** !! The User you entered is not registered !" << endl;
+                        cout << "** So contents can't be updated!" << endl;
                     }
-                    //
-                    // index = index + 1;
                 }
                 break;
+                // Case 4 to log out as admin
                 case 0:
                 {
+                    cout << "**" << endl;
+                    cout << "**" << endl;
                     cout << "**                          !!! Administrator is logged out !!!" << endl;
                     cout << "**" << endl;
                     cout << "**" << endl;
@@ -437,6 +490,7 @@ int main()
                 // Implementation of input choices
                 switch (input2)
                 {
+                // Case 1 to display tax status of user
                 case 1:
                 {
                     cout << "** For Tax Status : " << endl;
@@ -454,6 +508,7 @@ int main()
                     }
                 }
                 break;
+                // Case 1 to display tax assigned to user
                 case 2:
                 {
                     long double comp = calculateTax(tTax1, tTax2, tTax3, name, c, validation);
@@ -502,9 +557,11 @@ int main()
 
                     break;
                 }
-
+                    // Case 0 to log out as user
                 case 0:
                 {
+                    cout << "**" << endl;
+                    cout << "**" << endl;
                     cout << "**                           !!! User is logged out !!!" << endl;
                     cout << "**" << endl;
                     cout << "**" << endl;
@@ -520,7 +577,6 @@ int main()
         }
         n1++;
     } while (login != 3);
-
     cout << "**" << endl;
     return 0;
 }
@@ -600,7 +656,7 @@ void userHeader()
 // Function for Password Validation
 bool validPasscode(string password)
 {
-    if (password.length()>=8)
+    if (password.length() >= 8)
     {
         return true;
     }
