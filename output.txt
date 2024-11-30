@@ -1,0 +1,27 @@
+** Calculate Taxes: 
+** Enter user for which you want to calculate taxes:
+** Enter Salary:
+** The tax alloted to the user on salary is :3111.03
+** Enter Bank Balance & cash in hand:
+** The tax alloted to the user on bank balance and cash is :79012.3
+** Enter number of properties owned (up to 10):
+** Enter property 1
+** Enter measurement unit (i.e: marla, kanal, acre):  
+**!!! You entered invalid measurement unit !!!
+**!! As you entered invalid measurement unit your tax for that land will not be calculated!! 
+** The total tax alloted to user is : 
+82123.4
+**0** For e-Payment : 
+** Name of User: Sami
+** CNIC of User: 3410425908532
+** Your tax is :82123.4
+** Enter your credit card number(16 dig without alphabets, space & hiphen):
+** 82123.4 Rs will be transacted. You have paid your tax successfully!
+** For Tax Status : 
+** Name of User: Sami
+** CNIC of User: 3410425908532
+** Tax status is : paid
+** For e-Payment : 
+** Name of User: aryan
+** CNIC of User: 3412534567890
+** Your tax is not yet calculated. 
