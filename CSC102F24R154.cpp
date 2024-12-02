@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -72,7 +73,7 @@ int main()
         //  cin >> login;
         if (!(cin >> login))
         {
-            cout << "** Invalid input. Please enter a valid choice (1, 2, or 3)." << endl;
+            cout << "** Invalid choice. Program will log out." << endl;
             break;
         }
 
@@ -115,11 +116,13 @@ int main()
         {
             string nicard;
             cout << "** Enter the Username: ";
-            cin >> user;
+            cin.ignore();
+            getline(cin, user);
             if (validName(user))
             {
                 cout << "** Enter Password: ";
-                cin >> code;
+                cin.ignore();
+                getline(cin, code);
                 if (validPasscode(code))
                 {
                     cout << "** Enter CNIC(don't enter hypen): ";
@@ -208,7 +211,8 @@ int main()
                 cout << "** Choose an option: ";
                 if (!(cin >> input1))
                 {
-                    cout << "** Invalid input. Please enter valid choice (1,2,3,4 or 0)." << endl;
+                    cout << "** Invalid choice. Admin will log out." << endl;
+                    cout << "** Program logging out." << endl;
                     break;
                 }
                 // Implementation of input choices
@@ -222,11 +226,13 @@ int main()
                     cout << ID << endl;
                     cout << "** Enter username: ";
                     index = ID - 1;
+                    cin.ignore();
                     getline(cin, names);
                     username[index] = names;
                     if (validName(names))
                     {
                         cout << "** Enter Password: ";
+                        cin.ignore();
                         getline(cin, code);
                         if (validPasscode(code))
                         {
@@ -319,7 +325,8 @@ int main()
                 {
                     cout << "** Calculate Taxes: " << endl;
                     cout << "** Enter user for which you want to calculate taxes:";
-                    cin >> name;
+                    cin.ignore();
+                    getline(cin, name);
                     bool checked;
                     Flag = checkUser(name);
                     if (c < 6)
@@ -451,7 +458,8 @@ int main()
                     {
                         index = ID - 1;
                         cout << "** Enter the username to delete: ";
-                        cin >> name;
+                        cin.ignore();
+                        getline(cin, name);
                         if (checkUser(name))
                         {
                             username[index] = "0";
@@ -484,7 +492,8 @@ int main()
                     {
                         index = ID - 1;
                         cout << "** Enter the username to edit/update: ";
-                        cin >> name;
+                        cin.ignore();
+                        getline(cin, name);
                         if (checkUser(name))
                         {
                             cout << "** Enter the updted username : ";
@@ -493,7 +502,8 @@ int main()
                             {
                                 username[index] = userName;
                                 cout << "** Enter the updted password: ";
-                                cin >> userPassword;
+                                cin.ignore();
+                                getline(cin, userPassword);
                                 if (validPasscode(userPassword))
                                 {
                                     passwords[index] = userPassword;
@@ -627,7 +637,8 @@ int main()
                 cout << "** Choose an option: ";
                 if (!(cin >> input2))
                 {
-                    cout << "** Invalid input. Please enter valid choice (1,2,3,4 or 0)." << endl;
+                    cout << "** Invalid choice. User looging out." << endl;
+                    cout << "** Program logging out." << endl;
                     break;
                 }
                 // Implementation of input choices
@@ -713,13 +724,12 @@ int main()
                         }
                         else
                             cout << "** You have already paid your tax." << endl;
-                            fout << "** You have already paid your tax." << endl;
+                        fout << "** You have already paid your tax." << endl;
                     }
                     else
                     {
                         cout << "** Your tax is not yet calculated. " << endl;
                         fout << "** Your tax is not yet calculated. " << endl;
-                        
                     }
 
                     break;
