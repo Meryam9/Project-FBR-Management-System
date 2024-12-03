@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -39,6 +38,7 @@ bool isUniqueMail(string mail, int limit);
 bool validCreditCardNo(string creditNo);
 bool checkUser(string person);
 bool UserSign(string nicard, string nic);
+bool inputValidation(int inputs);
 long double salaryTax(double salary);
 long double cashTax(double cash);
 long double calculateTax(long double tax1, long double tax2, long double tax3, string name, int c, bool valid);
@@ -70,33 +70,25 @@ int main()
         cout << "** 2.User" << endl;
         cout << "** 3.Exit" << endl;
         cout << "** Enter a choice for login (Enter only 1 character digit):";
-        //  cin >> login;
-        if (!(cin >> login))
-        {
-            cout << "** Invalid choice. Program will log out." << endl;
-            break;
-        }
-
+        cin >> login;
         cout << "**" << endl;
         cout << "**" << endl;
-
-        if (login == 1 || login == 2)
+        while (inputValidation(login))
         {
-            cout << "** Please enter your username and password." << endl;
-        }
-        else if (login == 3)
-        {
-            cout << "** Your request for logout is being processed." << endl;
-        }
-        else
-        {
-            cout << "** You entered invalid choice for login. Enter your choice again." << endl;
+            cout << "** 1.Administrator" << endl;
+            cout << "** 2.User" << endl;
+            cout << "** 3.Exit" << endl;
+            cout << "** Enter a choice for login (Enter only 1 character digit):";
+            cin >> login;
+            cout << "**" << endl;
+            cout << "**" << endl;
         }
         // Switch statement for Login Functionality
         switch (login)
         {
         case 1:
         {
+            cout << "** Please enter your username and password." << endl;
             cout << "** Enter the Username: ";
             cin >> user;
             cout << "** Enter Password: ";
@@ -115,6 +107,7 @@ int main()
         case 2:
         {
             string nicard;
+            cout << "** Please enter your username and password." << endl;
             cout << "** Enter the Username: ";
             cin.ignore();
             getline(cin, user);
@@ -172,6 +165,7 @@ int main()
         case 3:
         {
             system("cls");
+            cout << "**                          Your request for logout is being processed." << endl;
             cout << "** " << endl;
             cout << "** " << endl;
             cout << "** " << endl;
@@ -184,7 +178,10 @@ int main()
         }
         default:
         {
-            cout << "** Invalid Input." << endl;
+            cout << "**" << endl;
+            cout << "** !! Invalid choice !!"<<endl;
+            cout << "** Enter your choice again." << endl;
+            cout << "**" << endl;
         }
         }
 
@@ -209,11 +206,21 @@ int main()
                      << setw(15) << "** 0. Logout " << endl;
                 cout << "** " << endl;
                 cout << "** Choose an option: ";
-                if (!(cin >> input1))
+                cin >> input1;
+                while (inputValidation(input1))
                 {
-                    cout << "** Invalid choice. Admin will log out." << endl;
-                    cout << "** Program logging out." << endl;
-                    break;
+                    cout << "** " << endl;
+                    cout << "** Choose the desired option" << endl;
+                    cout << left << setw(20) << "\tOptions" << endl
+                         << setw(15) << "** 1. Register new user" << endl
+                         << setw(15) << "** 2. Calculate taxes" << endl
+                         << setw(15) << "** 3. Delete user account" << endl
+                         << setw(15) << "** 4. Update user account" << endl
+                         << setw(15) << "** 5. List of users" << endl
+                         << setw(15) << "** 0. Logout " << endl;
+                    cout << "** " << endl;
+                    cout << "** Choose an option: ";
+                    cin >> input1;
                 }
                 // Implementation of input choices
                 switch (input1)
@@ -610,7 +617,10 @@ int main()
                 }
                 default:
                 {
-                    cout << "** !! Invalid choice !!";
+                    cout << "**" << endl;
+                    cout << "** !! Invalid choice !!"<<endl;
+                    cout << "** Enter your choice again" << endl;
+                    cout << "**" << endl;
                     break;
                 }
                 }
@@ -635,11 +645,19 @@ int main()
                      << setw(25) << "** 0. Logout" << endl;
                 cout << "** " << endl;
                 cout << "** Choose an option: ";
-                if (!(cin >> input2))
+                cin >> input2;
+
+                while (inputValidation(input2))
                 {
-                    cout << "** Invalid choice. User looging out." << endl;
-                    cout << "** Program logging out." << endl;
-                    break;
+                    cout << "** " << endl;
+                    cout << "** Choose the desired option\n";
+                    cout << left << setw(10)
+                         << setw(25) << "** 1. View Tax Status" << endl
+                         << setw(25) << "** 2. e-Payment" << endl
+                         << setw(25) << "** 0. Logout" << endl;
+                    cout << "** " << endl;
+                    cout << "** Choose an option: ";
+                    (cin >> input2);
                 }
                 // Implementation of input choices
                 switch (input2)
@@ -746,7 +764,10 @@ int main()
                 }
                 default:
                 {
-                    cout << "** !! Invalid choice !!";
+                    cout << "**" << endl;
+                    cout << "** !! Invalid choice !!" << endl;
+                    cout << "** Enter your choice again" << endl;
+                    cout << "**" << endl;
                     break;
                 }
                 }
@@ -847,7 +868,7 @@ bool validName(string str)
 // Function for Password Validation
 bool validPasscode(string password)
 {
-    if (password.length() >= 8)
+    if (password.length() >= 7)
     {
         return true;
     }
@@ -1027,6 +1048,21 @@ bool checkUser(string person)
         {
             return true;
         }
+    }
+    return false;
+}
+// Function to check validation for admin
+bool inputValidation(int inputs)
+{
+    while (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(256, '\n');
+        cout << "**" << endl;
+        cout << "** !! Invalid choice !!";
+        cout << "** Enter your choice again";
+        cout << "**" << endl;
+        return true;
     }
     return false;
 }
