@@ -9,7 +9,7 @@ int index = 0;
 long double totalTax = 0, tax1 = 0, tax2 = 0, tax3 = 0, tTax1 = 0, tTax2 = 0, tTax3 = 0, c = -1;
 string taxStatus;
 bool validation;
-const int usize = 5;  // Maximum Number of Users
+const int usize = 50;  // Maximum Number of Users
 const int psize = 10; // Maximum Number of Properties
 string username[usize];
 string passwords[usize];
