@@ -544,14 +544,14 @@ int main()
                                     cin >> userCNIC;
                                     if (validCNIC(userCNIC))
                                     {
-                                        if (isUnique(userCNIC, index))
+                                        if (isUnique(userCNIC, var))
                                         {
                                             arr[var].NIC = userCNIC;
                                             cout << "** Enter Cell Number (03001247897): ";
                                             cin >> cellNo;
                                             if (validCellNo(cellNo))
                                             {
-                                                if (isUniqueNo(cellNo, index))
+                                                if (isUniqueNo(cellNo, var))
                                                 {
                                                     arr[var].cellNum = cellNo;
                                                     cout << "** Enter user's E-mail: ";
@@ -559,7 +559,7 @@ int main()
                                                     email = arr[var].mails;
                                                     if (validEmail(email))
                                                     {
-                                                        if (isUniqueMail(email, index))
+                                                        if (isUniqueMail(email, var))
                                                         {
                                                             cout << "** User updated Successfully!" << endl;
                                                         }
