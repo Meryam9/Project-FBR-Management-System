@@ -5,12 +5,13 @@
 using namespace std;
 
 // Declaring Global Variables & Arrays
-int index = 0;
+int index = 0, var = 0;
 long double totalTax = 0, tax1 = 0, tax2 = 0, tax3 = 0, tTax1 = 0, tTax2 = 0, tTax3 = 0, c = -1;
 string taxStatus;
 bool validation;
-const int usize = 50;  // Maximum Number of Users
+const int usize = 50; // Maximum Number of Users
 const int psize = 10; // Maximum Number of Properties
+int ID[usize];
 string username[usize];
 string passwords[usize];
 string NIC[usize];
@@ -36,7 +37,7 @@ bool isUnique(string cnic, int limit);
 bool isUniqueNo(string cellNo, int limit);
 bool isUniqueMail(string mail, int limit);
 bool validCreditCardNo(string creditNo);
-bool checkUser(string person);
+bool checkUser(string person,int num);
 bool UserSign(string nicard, string nic);
 bool inputValidation(int inputs);
 long double salaryTax(double salary);
@@ -50,7 +51,7 @@ int main()
     system("Color 0F");
     // Declaring Variables
     int login, input1, input2, n1 = 0;
-    int ID = 1;
+    // int ID = 1;
     string name, email;
     string user, code, cnic, cellNo, nic;
     bool check, Flag = false, valid = false, flag1 = false;
@@ -179,7 +180,7 @@ int main()
         default:
         {
             cout << "**" << endl;
-            cout << "** !! Invalid choice !!"<<endl;
+            cout << "** !! Invalid choice !!" << endl;
             cout << "** Enter your choice again." << endl;
             cout << "**" << endl;
         }
@@ -229,10 +230,10 @@ int main()
                 case 1:
                 {
                     string names;
+                    ID[index] = index + 1;
                     cout << "** The ID of user : ";
-                    cout << ID << endl;
+                    cout << ID[index] << endl;
                     cout << "** Enter username: ";
-                    index = ID - 1;
                     cin.ignore();
                     getline(cin, names);
                     username[index] = names;
@@ -269,7 +270,7 @@ int main()
                                                     validation = false;
                                                 }
                                                 else
-                                                    ID--;
+                                                    ID[index] = 0;
                                             }
                                             else
                                             {
@@ -280,7 +281,7 @@ int main()
                                                 cellNum[index] = "0";
                                                 mails[index] = "0";
                                                 cout << "** The user you entered will not be registered." << endl;
-                                                ID--;
+                                                ID[index] = 0;
                                             }
                                         }
                                     }
@@ -292,7 +293,7 @@ int main()
                                         NIC[index] = "0";
                                         cellNum[index] = "0";
                                         cout << "** The user you entered will not be registered." << endl;
-                                        ID--;
+                                        ID[index] = 0;
                                     }
                                 }
                             }
@@ -303,7 +304,7 @@ int main()
                                 passwords[index] = "0";
                                 NIC[index] = "0";
                                 cout << "** The user you entered will not be registered." << endl;
-                                ID--;
+                                ID[index] = 0;
                             }
                         }
                         else
@@ -313,7 +314,7 @@ int main()
                             username[index] = "0";
                             passwords[index] = "0";
                             cout << "** The user you entered will not be registered." << endl;
-                            ID--;
+                            ID[index] = 0;
                         }
                     }
                     else
@@ -322,20 +323,23 @@ int main()
                         cout << "** Username must consist of three letters." << endl;
                         username[index] = "0";
                         cout << "** The user you entered will not be registered." << endl;
-                        ID--;
+                        ID[index] = 0;
                     }
-                    ID++;
+                    index++;
                 }
                 break;
                 // Case 2 to calculate user taxes in the system
                 case 2:
                 {
+                    int identity;
                     cout << "** Calculate Taxes: " << endl;
                     cout << "** Enter user for which you want to calculate taxes:";
                     cin.ignore();
                     getline(cin, name);
+                    cout << "** Enter user ID:";
+                    cin>>identity;
                     bool checked;
-                    Flag = checkUser(name);
+                    Flag = checkUser(name,identity);
                     if (c < 6)
                     {
                         if (Flag == true)
@@ -457,29 +461,31 @@ int main()
                 // Case 3 to delete user account in the system
                 case 3:
                 {
+                    int no;
                     cout << "** For Deletion of user account : " << endl;
-                    int ID;
+                    // int ID;
                     cout << "** Enter ID of user (1 digit number only): ";
-                    cin >> ID;
-                    if (ID > 0 && ID <= usize)
+                    cin >> no;
+                    if (no > 0 && no <= usize)
                     {
-                        index = ID - 1;
+                        // index = ID - 1;
                         cout << "** Enter the username to delete: ";
                         cin.ignore();
                         getline(cin, name);
-                        if (checkUser(name))
-                        {
-                            username[index] = "0";
-                            passwords[index] = "0";
-                            NIC[index] = "0";
-                            cellNum[index] = "0";
-                            mails[index] = "0";
-                            cout << "** User deleted Successfully!";
-                        }
-                        else
-                        {
-                            cout << "** The User you entered is not registered!" << endl;
-                        }
+                            if (checkUser(name,no))
+                            {
+                                ID[var] = 0;
+                                username[var] = "0";
+                                passwords[var] = "0";
+                                NIC[var] = "0";
+                                cellNum[var] = "0";
+                                mails[var] = "0";
+                                cout << "** User deleted Successfully!";
+                            }
+                            else
+                            {
+                                cout << "** The User you entered is not registered!" << endl;
+                            }
                     }
                     else
                     {
@@ -491,46 +497,47 @@ int main()
                 case 4:
                 {
                     string userName, userPassword, userCNIC, userMail;
+                    int num;
                     cout << "** For Updation of user account : " << endl;
-                    int ID;
+                    // int ID;
                     cout << "** Enter ID of user (1 digit number only): ";
-                    cin >> ID;
-                    if (ID > 0 && ID <= usize)
+                    cin >> num;
+                    if (num > 0 && num <= usize)
                     {
-                        index = ID - 1;
+                        // index = ID - 1;
                         cout << "** Enter the username to edit/update: ";
                         cin.ignore();
                         getline(cin, name);
-                        if (checkUser(name))
+                        if (checkUser(name,num))
                         {
                             cout << "** Enter the updted username : ";
                             cin >> userName;
                             if (validName(userName))
                             {
-                                username[index] = userName;
+                                username[var] = userName;
                                 cout << "** Enter the updted password: ";
                                 cin.ignore();
                                 getline(cin, userPassword);
                                 if (validPasscode(userPassword))
                                 {
-                                    passwords[index] = userPassword;
+                                    passwords[var] = userPassword;
                                     cout << "** Enter user's CNIC: ";
                                     cin >> userCNIC;
                                     if (validCNIC(userCNIC))
                                     {
                                         if (isUnique(userCNIC, index))
                                         {
-                                            NIC[index] = userCNIC;
+                                            NIC[var] = userCNIC;
                                             cout << "** Enter Cell Number (03001247897): ";
                                             cin >> cellNo;
                                             if (validCellNo(cellNo))
                                             {
                                                 if (isUniqueNo(cellNo, index))
                                                 {
-                                                    cellNum[index] = cellNo;
+                                                    cellNum[var] = cellNo;
                                                     cout << "** Enter user's E-mail: ";
-                                                    cin >> mails[index];
-                                                    email = mails[index];
+                                                    cin >> mails[var];
+                                                    email = mails[var];
                                                     if (validEmail(email))
                                                     {
                                                         if (isUniqueMail(email, index))
@@ -541,7 +548,7 @@ int main()
                                                     else
                                                     {
                                                         cout << "** ! You entered invalid mail credentials. ! " << endl;
-                                                        mails[index] = "0";
+                                                        mails[var] = "0";
                                                         cout << "** ! User email will have a null value. " << endl;
                                                         cout << "** Choose update option again to resolve this issue. ! " << endl;
                                                     }
@@ -550,7 +557,7 @@ int main()
                                             else
                                             {
                                                 cout << "** ! You entered invalid Cell Number credentials. ! " << endl;
-                                                cellNum[index] = "0";
+                                                cellNum[var] = "0";
                                                 cout << "** ! User CNIC will have a null value. " << endl;
                                                 cout << "** Choose update option again to resolve this issue. ! " << endl;
                                             }
@@ -559,7 +566,7 @@ int main()
                                     else
                                     {
                                         cout << "** ! You entered invalid CNIC credentials. ! " << endl;
-                                        NIC[index] = "0";
+                                        NIC[var] = "0";
                                         cout << "** ! User CNIC will have a null value. " << endl;
                                         cout << "** Choose update option again to resolve this issue. ! " << endl;
                                     }
@@ -567,7 +574,7 @@ int main()
                                 else
                                 {
                                     cout << "** ! Password must consists of 8 characters !" << endl;
-                                    passwords[index] = "0";
+                                    passwords[var] = "0";
                                     cout << "** ! User password will have a null value. " << endl;
                                     cout << "** Choose update option again to resolve this issue. ! " << endl;
                                 }
@@ -618,7 +625,7 @@ int main()
                 default:
                 {
                     cout << "**" << endl;
-                    cout << "** !! Invalid choice !!"<<endl;
+                    cout << "** !! Invalid choice !!" << endl;
                     cout << "** Enter your choice again" << endl;
                     cout << "**" << endl;
                     break;
@@ -1040,12 +1047,13 @@ bool UserSign(string nicard, string nic)
     return accurate;
 }
 // Function to check user
-bool checkUser(string person)
+bool checkUser(string person,int num)
 {
     for (int i = 0; i < usize; i++)
     {
-        if (person == username[i])
+        if (person == username[i] && ID[i]==num)
         {
+            var = i;
             return true;
         }
     }
