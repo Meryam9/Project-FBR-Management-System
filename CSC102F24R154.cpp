@@ -127,7 +127,6 @@ int main()
             if (validName(user))
             {
                 cout << "** Enter Password: ";
-                cin.ignore();
                 getline(cin, code);
                 if (validPasscode(code))
                 {
@@ -252,7 +251,6 @@ int main()
                     if (validName(names))
                     {
                         cout << "** Enter Password: ";
-                        cin.ignore();
                         getline(cin, code);
                         if (validPasscode(code))
                         {
@@ -281,7 +279,8 @@ int main()
                                                     cout << "** User Registered Successfully! " << endl;
                                                     validation = false;
                                                 }
-                                                else{
+                                                else
+                                                {
                                                     arr[index].ID = 0;
                                                     index--;
                                                 }
@@ -530,12 +529,12 @@ int main()
                         if (checkUser(name, num))
                         {
                             cout << "** Enter the updted username : ";
-                            cin >> userName;
+                            cin.ignore();
+                            getline(cin, name);
                             if (validName(userName))
                             {
                                 arr[var].username = userName;
                                 cout << "** Enter the updted password: ";
-                                cin.ignore();
                                 getline(cin, userPassword);
                                 if (validPasscode(userPassword))
                                 {
