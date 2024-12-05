@@ -4,36 +4,13 @@
 #include <fstream>
 using namespace std;
 
-// Declaring Global Variables & Arrays
+// Declaring Global Variables
 int index = 0, var = 0;
 long double totalTax = 0, tax1 = 0, tax2 = 0, tax3 = 0, tTax1 = 0, tTax2 = 0, tTax3 = 0, c = -1;
 string taxStatus;
 bool validation;
 const int usize = 50; // Maximum Number of Users
 const int psize = 10; // Maximum Number of Properties
-// Struct people
-struct people
-{
-    int ID;
-    string username;
-    string passwords;
-    string NIC;
-    string mails;
-    string cellNum;
-};
-people arr[usize];
-people vari;
-// Struct peopleTax
-struct peopleTax
-{
-    string users;
-    long double taxCalculation;
-    string unit[psize];
-    int area[psize];
-    int price[psize];
-};
-peopleTax arr1[usize];
-peopleTax variable;
 
 // Functions Declaration
 void headerFBR();
@@ -45,16 +22,16 @@ bool validPasscode(string password);
 bool validCellNo(string &cellNo);
 bool validCNIC(string cnic);
 bool validEmail(string email);
-bool isUnique(string cnic, int limit);
-bool isUniqueNo(string cellNo, int limit);
-bool isUniqueMail(string mail, int limit);
+bool isUnique(string cnic, int limit, string NIC[]);
+bool isUniqueNo(string cellNo, int limit, string cellNum[]);
+bool isUniqueMail(string mail, int limit, string mails[]);
 bool validCreditCardNo(string creditNo);
-bool checkUser(string person, int num);
+bool checkUser(string person, int num, int ID[], string username[]);
 bool UserSign(string nicard, string nic);
 bool inputValidation(int inputs);
 long double salaryTax(double salary);
 long double cashTax(double cash);
-long double calculateTax(long double tax1, long double tax2, long double tax3, string name, int c, bool valid);
+long double calculateTax(long double tax1, long double tax2, long double tax3, string name, int c, bool valid, string users[], long double taxCalculation[]);
 
 // Main Function
 int main()
@@ -67,6 +44,17 @@ int main()
     string name, email;
     string user, code, cnic, cellNo, nic;
     bool check, Flag = false, valid = false, flag1 = false;
+    int ID[usize];
+    string username[usize];
+    string passwords[usize];
+    string NIC[usize];
+    string mails[usize];
+    string cellNum[usize];
+    string users[usize];
+    long double taxCalculation[usize];
+    string unit[psize];
+    int area[psize];
+    int price[psize];
     ifstream fin;
     fin.open("input.txt");
     ofstream fout;
@@ -127,6 +115,7 @@ int main()
             if (validName(user))
             {
                 cout << "** Enter Password: ";
+                cin.ignore();
                 getline(cin, code);
                 if (validPasscode(code))
                 {
@@ -137,9 +126,9 @@ int main()
                         // write code to search user from user list
                         for (int i = 0; i < usize; i++)
                         {
-                            if ((user == arr[i].username) && (code == arr[i].passwords) && (nic == arr[i].NIC))
+                            if ((user == username[i]) && (code == passwords[i]) && (nic == NIC[i]))
                             {
-                                nicard = arr[i].NIC;
+                                nicard = NIC[i];
                                 if (UserSign(nicard, nic))
                                 {
                                     Flag = true;
@@ -241,60 +230,61 @@ int main()
                 case 1:
                 {
                     string names;
-                    arr[index].ID = index + 1;
+                    ID[index] = index + 1;
                     cout << "** The ID of user : ";
-                    cout << arr[index].ID << endl;
+                    cout << ID[index] << endl;
                     cout << "** Enter username: ";
                     cin.ignore();
                     getline(cin, names);
-                    arr[index].username = names;
+                    username[index] = names;
                     if (validName(names))
                     {
                         cout << "** Enter Password: ";
+                        cin.ignore();
                         getline(cin, code);
                         if (validPasscode(code))
                         {
-                            arr[index].passwords = code;
+                            passwords[index] = code;
                             cout << "** Enter CNIC (Don't enter hyphen): ";
                             cin >> cnic;
                             if (validCNIC(cnic))
                             {
-                                if (isUnique(cnic, index))
+                                if (isUnique(cnic, index, NIC))
                                 {
-                                    arr[index].NIC = cnic;
+                                    NIC[index] = cnic;
                                     cout << "** Enter Cell Number (03001247897): ";
                                     cin >> cellNo;
                                     if (validCellNo(cellNo))
                                     {
-                                        if (isUniqueNo(cellNo, index))
+                                        if (isUniqueNo(cellNo, index, cellNum))
                                         {
-                                            arr[index].cellNum = cellNo;
+                                            cellNum[index] = cellNo;
                                             cout << "** Enter e-mail: ";
-                                            cin >> arr[index].mails;
-                                            email = arr[index].mails;
+                                            cin >> mails[index];
+                                            email = mails[index];
                                             if (validEmail(email))
                                             {
-                                                if (isUniqueMail(email, index))
+                                                if (isUniqueMail(email, index, mails))
                                                 {
                                                     cout << "** User Registered Successfully! " << endl;
                                                     validation = false;
                                                 }
                                                 else
                                                 {
-                                                    arr[index].ID = 0;
+                                                    ID[index] = 0;
                                                     index--;
                                                 }
                                             }
                                             else
                                             {
                                                 cout << "** !! User Email Credentials are wrong !!" << endl;
-                                                arr[index].username = "0";
-                                                arr[index].passwords = "0";
-                                                arr[index].NIC = "0";
-                                                arr[index].cellNum = "0";
-                                                arr[index].mails = "0";
+                                                username[index] = "0";
+                                                passwords[index] = "0";
+                                                NIC[index] = "0";
+                                                cellNum[index] = "0";
+                                                mails[index] = "0";
                                                 cout << "** The user you entered will not be registered." << endl;
-                                                arr[index].ID = 0;
+                                                ID[index] = 0;
                                                 index--;
                                             }
                                         }
@@ -302,12 +292,12 @@ int main()
                                     else
                                     {
                                         cout << "** !! User Cell Number Credentials are wrong !!" << endl;
-                                        arr[index].username = "0";
-                                        arr[index].passwords = "0";
-                                        arr[index].NIC = "0";
-                                        arr[index].cellNum = "0";
+                                        username[index] = "0";
+                                        passwords[index] = "0";
+                                        NIC[index] = "0";
+                                        cellNum[index] = "0";
                                         cout << "** The user you entered will not be registered." << endl;
-                                        arr[index].ID = 0;
+                                        ID[index] = 0;
                                         index--;
                                     }
                                 }
@@ -315,11 +305,11 @@ int main()
                             else
                             {
                                 cout << "** !! User CNIC Credentials are wrong !! " << endl;
-                                arr[index].username = "0";
-                                arr[index].passwords = "0";
-                                arr[index].NIC = "0";
+                                username[index] = "0";
+                                passwords[index] = "0";
+                                NIC[index] = "0";
                                 cout << "** The user you entered will not be registered." << endl;
-                                arr[index].ID = 0;
+                                ID[index] = 0;
                                 index--;
                             }
                         }
@@ -327,10 +317,10 @@ int main()
                         {
                             cout << "** ! You entered invalid credentials for PASSWORD. !" << endl;
                             cout << "** Password must consist of eight letters." << endl;
-                            arr[index].username = "0";
-                            arr[index].passwords = "0";
+                            username[index] = "0";
+                            passwords[index] = "0";
                             cout << "** The user you entered will not be registered." << endl;
-                            arr[index].ID = 0;
+                            ID[index] = 0;
                             index--;
                         }
                     }
@@ -338,9 +328,9 @@ int main()
                     {
                         cout << "** ! You entered invalid credentials for Name. !" << endl;
                         cout << "** Username must consist of three letters." << endl;
-                        arr[index].username = "0";
+                        username[index] = "0";
                         cout << "** The user you entered will not be registered." << endl;
-                        arr[index].ID = 0;
+                        ID[index] = 0;
                         index--;
                     }
                     index++;
@@ -357,7 +347,7 @@ int main()
                     cout << "** Enter user ID:";
                     cin >> identity;
                     bool checked;
-                    Flag = checkUser(name, identity);
+                    Flag = checkUser(name, identity, ID, username);
                     if (c < 6)
                     {
                         if (Flag == true)
@@ -410,22 +400,22 @@ int main()
                             {
                                 cout << "** Enter property " << i << endl;
                                 cout << "** Enter measurement unit (i.e: marla, kanal, acre):  ";
-                                cin >> arr1[index].unit[i];
+                                cin >> unit[i];
                                 fout << "** Enter property " << i << endl;
                                 fout << "** Enter measurement unit (i.e: marla, kanal, acre):  ";
-                                fin >> arr1[index].unit[i];
-                                if (arr1[index].unit[i] == "marla" || arr1[index].unit[i] == "kanal" || arr1[index].unit[i] == "acre")
+                                fin >> unit[i];
+                                if (unit[i] == "marla" || unit[i] == "kanal" || unit[i] == "acre")
                                 {
                                     checked = true;
                                     cout << "** Enter total area (i.e: 5):  ";
-                                    cin >> arr1[index].area[i];
+                                    cin >> area[i];
                                     cout << "** Enter price of land:  ";
-                                    cin >> arr1[index].price[i];
+                                    cin >> price[i];
 
                                     fout << "** Enter total area (i.e: 5):  ";
-                                    fin >> arr1[index].area[i];
+                                    fin >> area[i];
                                     fout << "** Enter price of land:  ";
-                                    fin >> arr1[index].price[i];
+                                    fin >> price[i];
                                 }
                                 else
                                 {
@@ -437,17 +427,17 @@ int main()
                                 if (checked)
                                 {
                                     // Calculate tax based on measurement type and area
-                                    if (arr1[index].unit[i] == "acre")
+                                    if (unit[i] == "acre")
                                     {
-                                        tax3 = arr1[index].price[i] * 10.0;
+                                        tax3 = price[i] * 10.0;
                                     }
-                                    else if (arr1[index].unit[i] == "kanal")
+                                    else if (unit[i] == "kanal")
                                     {
-                                        tax3 = arr1[index].price[i] * 5.0;
+                                        tax3 = price[i] * 5.0;
                                     }
-                                    else if (arr1[index].unit[i] == "marla")
+                                    else if (unit[i] == "marla")
                                     {
-                                        tax3 = arr1[index].price[i] * 2.0;
+                                        tax3 = price[i] * 2.0;
                                     }
                                     tTax3 = tTax3 + tax3;
                                     cout << fixed << setprecision(2);
@@ -466,7 +456,7 @@ int main()
                             cout << "** The total tax alloted to user is : ";
                             fout << "** The total tax alloted to user is : ";
                             validation = true;
-                            calculateTax(tTax1, tTax2, tTax3, name, c, validation);
+                            calculateTax(tTax1, tTax2, tTax3, name, c, validation, users, taxCalculation);
                         }
                         if (Flag == false)
                         {
@@ -490,14 +480,14 @@ int main()
                         cout << "** Enter the username to delete: ";
                         cin.ignore();
                         getline(cin, name);
-                        if (checkUser(name, no))
+                        if (checkUser(name, no, ID, username))
                         {
-                            arr[var].ID = 0;
-                            arr[var].username = "0";
-                            arr[var].passwords = "0";
-                            arr[var].NIC = "0";
-                            arr[var].cellNum = "0";
-                            arr[var].mails = "0";
+                            ID[var] = 0;
+                            username[var] = "0";
+                            passwords[var] = "0";
+                            NIC[var] = "0";
+                            cellNum[var] = "0";
+                            mails[var] = "0";
                             cout << "** User deleted Successfully!";
                         }
                         else
@@ -526,39 +516,40 @@ int main()
                         cout << "** Enter the username to edit/update: ";
                         cin.ignore();
                         getline(cin, name);
-                        if (checkUser(name, num))
+                        if (checkUser(name, num, ID, username))
                         {
                             cout << "** Enter the updted username : ";
                             cin.ignore();
                             getline(cin, name);
                             if (validName(userName))
                             {
-                                arr[var].username = userName;
+                                username[var] = userName;
                                 cout << "** Enter the updted password: ";
+                                cin.ignore();
                                 getline(cin, userPassword);
                                 if (validPasscode(userPassword))
                                 {
-                                    arr[var].passwords = userPassword;
+                                    passwords[var] = userPassword;
                                     cout << "** Enter user's CNIC: ";
                                     cin >> userCNIC;
                                     if (validCNIC(userCNIC))
                                     {
-                                        if (isUnique(userCNIC, var))
+                                        if (isUnique(userCNIC, var, NIC))
                                         {
-                                            arr[var].NIC = userCNIC;
+                                            NIC[var] = userCNIC;
                                             cout << "** Enter Cell Number (03001247897): ";
                                             cin >> cellNo;
                                             if (validCellNo(cellNo))
                                             {
-                                                if (isUniqueNo(cellNo, var))
+                                                if (isUniqueNo(cellNo, var, cellNum))
                                                 {
-                                                    arr[var].cellNum = cellNo;
+                                                    cellNum[var] = cellNo;
                                                     cout << "** Enter user's E-mail: ";
-                                                    cin >> arr[var].mails;
-                                                    email = arr[var].mails;
+                                                    cin >> mails[var];
+                                                    email = mails[var];
                                                     if (validEmail(email))
                                                     {
-                                                        if (isUniqueMail(email, var))
+                                                        if (isUniqueMail(email, var, mails))
                                                         {
                                                             cout << "** User updated Successfully!" << endl;
                                                         }
@@ -566,7 +557,7 @@ int main()
                                                     else
                                                     {
                                                         cout << "** ! You entered invalid mail credentials. ! " << endl;
-                                                        arr[var].mails = "0";
+                                                        mails[var] = "0";
                                                         cout << "** ! User email will have a null value. " << endl;
                                                         cout << "** Choose update option again to resolve this issue. ! " << endl;
                                                     }
@@ -575,7 +566,7 @@ int main()
                                             else
                                             {
                                                 cout << "** ! You entered invalid Cell Number credentials. ! " << endl;
-                                                arr[var].cellNum = "0";
+                                                cellNum[var] = "0";
                                                 cout << "** ! User CNIC will have a null value. " << endl;
                                                 cout << "** Choose update option again to resolve this issue. ! " << endl;
                                             }
@@ -584,7 +575,7 @@ int main()
                                     else
                                     {
                                         cout << "** ! You entered invalid CNIC credentials. ! " << endl;
-                                        arr[var].NIC = "0";
+                                        NIC[var] = "0";
                                         cout << "** ! User CNIC will have a null value. " << endl;
                                         cout << "** Choose update option again to resolve this issue. ! " << endl;
                                     }
@@ -592,7 +583,7 @@ int main()
                                 else
                                 {
                                     cout << "** ! Password must consists of 8 characters !" << endl;
-                                    arr[var].passwords = "0";
+                                    passwords[var] = "0";
                                     cout << "** ! User password will have a null value. " << endl;
                                     cout << "** Choose update option again to resolve this issue. ! " << endl;
                                 }
@@ -621,12 +612,12 @@ int main()
                     cout << "****************************************************************************************" << endl;
                     for (int i = 0; i <= index; i++)
                     {
-                        cout << "** " << arr[i].ID << "  ";
-                        cout << arr[i].username << "       ";
-                        cout << arr[i].passwords << "       ";
-                        cout << arr[i].NIC << "       ";
-                        cout << arr[i].cellNum << "       ";
-                        cout << arr[i].mails << "       " << endl;
+                        cout << "** " << i + 1 << "  ";
+                        cout << username[i] << "       ";
+                        cout << passwords[i] << "       ";
+                        cout << NIC[i] << "       ";
+                        cout << cellNum[i] << "       ";
+                        cout << mails[i] << "       " << endl;
                     }
                 }
                 break;
@@ -715,7 +706,7 @@ int main()
                 // Case 1 to display tax assigned to user
                 case 2:
                 {
-                    long double comp = calculateTax(tTax1, tTax2, tTax3, name, c, validation);
+                    long double comp = calculateTax(tTax1, tTax2, tTax3, name, c, validation, users, taxCalculation);
                     cout << "** For e-Payment : " << endl;
                     cout << "** Name of User: ";
                     cout << user << endl;
@@ -728,11 +719,11 @@ int main()
                     fout << nic << endl;
                     for (int i = 0; i < 5; i++)
                     {
-                        if (user == arr1[i].users)
+                        if (user == users[i])
                         {
-                            if (arr1[i].taxCalculation != 0.0)
+                            if (taxCalculation[i] != 0.0)
                             {
-                                comp = arr1[i].taxCalculation;
+                                comp = taxCalculation[i];
                                 break;
                             }
                         }
@@ -963,12 +954,12 @@ bool validEmail(string email)
         return true;
 }
 // Function to check if the user cinc is unique
-bool isUnique(string cnic, int limit)
+bool isUnique(string cnic, int limit, string NIC[])
 {
     bool identical = true;
     for (int i = 0; i <= usize; i++)
     {
-        if (arr[i].NIC == cnic)
+        if (NIC[i] == cnic)
         {
             if (i != limit)
             {
@@ -984,12 +975,12 @@ bool isUnique(string cnic, int limit)
     return identical;
 }
 // Function to check if the user cell number is unique
-bool isUniqueNo(string cellNo, int limit)
+bool isUniqueNo(string cellNo, int limit, string cellNum[])
 {
     bool identical = true;
     for (int i = 0; i <= usize; i++)
     {
-        if (arr[i].cellNum == cellNo)
+        if (cellNum[i] == cellNo)
         {
             if (i != limit)
             {
@@ -1005,12 +996,12 @@ bool isUniqueNo(string cellNo, int limit)
     return identical;
 }
 // Function to check if the user mail is unique
-bool isUniqueMail(string mail, int limit)
+bool isUniqueMail(string mail, int limit, string mails[])
 {
     bool identical = true;
     for (int i = 0; i <= usize; i++)
     {
-        if (arr[i].mails == mail)
+        if (mails[i] == mail)
         {
             if (i != limit)
             {
@@ -1065,11 +1056,11 @@ bool UserSign(string nicard, string nic)
     return accurate;
 }
 // Function to check user
-bool checkUser(string person, int num)
+bool checkUser(string person, int num, int ID[], string username[])
 {
     for (int i = 0; i < usize; i++)
     {
-        if (person == arr[i].username && arr[i].ID == num)
+        if (person == username[i] && ID[i] == num)
         {
             var = i;
             return true;
@@ -1162,7 +1153,7 @@ long double cashTax(double cash)
     return tax2;
 }
 // Functon to calculate total tax
-long double calculateTax(long double tax1, long double tax2, long double tax3, string name, int c, bool valid)
+long double calculateTax(long double tax1, long double tax2, long double tax3, string name, int c, bool valid, string users[], long double taxCalculation[])
 {
     totalTax = tax1 + tax2 + tax3;
     if (valid)
@@ -1171,11 +1162,11 @@ long double calculateTax(long double tax1, long double tax2, long double tax3, s
         {
             if (i == c)
             {
-                arr1[i].taxCalculation = totalTax;
-                arr1[i].users = name;
-                cout << arr1[i].users;
+                taxCalculation[i] = totalTax;
+                users[i] = name;
+                cout << users[i];
                 cout << fixed << setprecision(2);
-                cout << "  tax is " << arr1[i].taxCalculation << endl;
+                cout << "  tax is " << taxCalculation[i] << endl;
                 break;
             }
         }
