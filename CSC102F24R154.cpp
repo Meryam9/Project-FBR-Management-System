@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <string>
 #include <fstream>
+#include <windows.h>
 using namespace std;
 
 // Declaring Global Variables
@@ -63,6 +64,8 @@ int main()
     do
     {
         // Calling Function
+        Sleep(1000);
+        system("cls");
         headerFBR();
         if (n1 == 0)
         {
@@ -116,7 +119,7 @@ int main()
             if (validName(user) && checkName(user))
             {
                 cout << "** Enter Password: ";
-                cin.ignore();
+                // cin.ignore();
                 getline(cin, code);
                 if (validPasscode(code))
                 {
@@ -189,12 +192,12 @@ int main()
 
         // For Administrator
         if (login == 1 && check == true)
-        {
-            // system("cls");
-            adminHeader();
+        {           
             do
             {
-
+                Sleep(2000);
+                system("cls");
+                adminHeader();
                 int num;
                 double salary, cash;
                 cout << "** " << endl;
@@ -370,7 +373,7 @@ int main()
                                 tTax1 = salaryTax(salary);
                             }
                             else
-                            cout<<"Salary should be greater than 1000."<<endl;
+                                cout << "** Salary should be greater than 1000." << endl;
                             cout << "** Enter Bank Balance & cash in hand:";
                             cin >> cash;
                             if (cash > 1000)
@@ -387,7 +390,7 @@ int main()
                                 tTax2 = cashTax(cash);
                             }
                             else
-                            cout<<"Bank balance should be greater than 1000."<<endl;
+                                cout << "** Bank balance should be greater than 1000." << endl;
                             cout << "** Enter number of properties owned (up to 10):";
                             cin >> num;
                             fout << "** Enter number of properties owned (up to 10):";
@@ -655,10 +658,11 @@ int main()
         if (login == 2 && Flag == true)
 
         {
-            // system("cls");
-            userHeader();
             do
             {
+                Sleep(2000);
+                system("cls");
+                userHeader();               
                 int income;
                 string creditNo;
                 cout << "** " << endl;
