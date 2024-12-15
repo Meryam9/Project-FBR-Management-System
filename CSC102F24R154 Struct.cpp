@@ -108,6 +108,7 @@ int main()
             if (user == "Admin" || user == "ADMIN" && code == "FBR2024")
             {
                 check = true;
+                cout << "** LOGIN SUCCESSFUL!." << endl;
             }
             else
             {
