@@ -6,7 +6,7 @@ using namespace std;
 
 // Declaring Global Variables
 int index = 0, var = 0;
-long double totalTax = 0, tax1 = 0, tax2 = 0, tax3 = 0, tTax1 = 0, tTax2 = 0, tTax3 = 0, c = -1;
+long double totalTax = 0, tax3 = 0, tTax1 = 0, tTax2 = 0, tTax3 = 0, c = -1;
 string taxStatus;
 bool validation;
 const int usize = 50; // Maximum Number of Users
@@ -18,6 +18,7 @@ void headerTax();
 void adminHeader();
 void userHeader();
 bool validName(string str);
+bool checkName(string str);
 bool validPasscode(string password);
 bool validCellNo(string &cellNo);
 bool validCNIC(string cnic);
@@ -112,7 +113,7 @@ int main()
             cout << "** Enter the Username: ";
             cin.ignore();
             getline(cin, user);
-            if (validName(user))
+            if (validName(user) && checkName(user))
             {
                 cout << "** Enter Password: ";
                 cin.ignore();
@@ -159,7 +160,7 @@ int main()
             else
             {
                 cout << "** ! You entered invalid credentials for Username. !" << endl;
-                cout << "** Name must consist of three letters." << endl;
+                cout << "** Name must consist of three letters and have no digits." << endl;
             }
         }
         break;
@@ -237,10 +238,10 @@ int main()
                     cin.ignore();
                     getline(cin, names);
                     username[index] = names;
-                    if (validName(names))
+                    if (validName(names) && checkName(names))
                     {
                         cout << "** Enter Password: ";
-                        cin.ignore();
+                        // cin.ignore();
                         getline(cin, code);
                         if (validPasscode(code))
                         {
@@ -327,7 +328,7 @@ int main()
                     else
                     {
                         cout << "** ! You entered invalid credentials for Name. !" << endl;
-                        cout << "** Username must consist of three letters." << endl;
+                        cout << "** Username must consist of three letters and no digits." << endl;
                         username[index] = "0";
                         cout << "** The user you entered will not be registered." << endl;
                         ID[index] = 0;
@@ -355,30 +356,38 @@ int main()
 
                             cout << "** Enter Salary:";
                             cin >> salary;
-                            cout << "** The tax alloted to the user on salary is :";
-                            cout << fixed << setprecision(2);
-                            cout << salaryTax(salary) << endl;
-                            tTax1 = salaryTax(salary);
-                            fout << "** Enter Salary:";
-                            fin >> salary;
-                            fout << "** The tax alloted to the user on salary is :";
-                            fout << fixed << setprecision(2);
-                            fout << salaryTax(salary) << endl;
-                            tTax1 = salaryTax(salary);
-
+                            if (salary > 1000)
+                            {
+                                cout << "** The tax alloted to the user on salary is :";
+                                cout << fixed << setprecision(2);
+                                cout << salaryTax(salary) << endl;
+                                tTax1 = salaryTax(salary);
+                                fout << "** Enter Salary:";
+                                fin >> salary;
+                                fout << "** The tax alloted to the user on salary is :";
+                                fout << fixed << setprecision(2);
+                                fout << salaryTax(salary) << endl;
+                                tTax1 = salaryTax(salary);
+                            }
+                            else
+                            cout<<"Salary should be greater than 1000."<<endl;
                             cout << "** Enter Bank Balance & cash in hand:";
                             cin >> cash;
-                            cout << "** The tax alloted to the user on bank balance and cash is :";
-                            cout << fixed << setprecision(2);
-                            cout << cashTax(cash) << endl;
-                            tTax2 = cashTax(cash);
-                            fout << "** Enter Bank Balance & cash in hand:";
-                            fin >> cash;
-                            fout << "** The tax alloted to the user on bank balance and cash is :";
-                            fout << fixed << setprecision(2);
-                            fout << cashTax(cash) << endl;
-                            tTax2 = cashTax(cash);
-
+                            if (cash > 1000)
+                            {
+                                cout << "** The tax alloted to the user on bank balance and cash is :";
+                                cout << fixed << setprecision(2);
+                                cout << cashTax(cash) << endl;
+                                tTax2 = cashTax(cash);
+                                fout << "** Enter Bank Balance & cash in hand:";
+                                fin >> cash;
+                                fout << "** The tax alloted to the user on bank balance and cash is :";
+                                fout << fixed << setprecision(2);
+                                fout << cashTax(cash) << endl;
+                                tTax2 = cashTax(cash);
+                            }
+                            else
+                            cout<<"Bank balance should be greater than 1000."<<endl;
                             cout << "** Enter number of properties owned (up to 10):";
                             cin >> num;
                             fout << "** Enter number of properties owned (up to 10):";
@@ -471,7 +480,6 @@ int main()
                 {
                     int no;
                     cout << "** For Deletion of user account : " << endl;
-                    // int ID;
                     cout << "** Enter ID of user (1 digit number only): ";
                     cin >> no;
                     if (no > 0 && no <= usize)
@@ -519,13 +527,13 @@ int main()
                         if (checkUser(name, num, ID, username))
                         {
                             cout << "** Enter the updted username : ";
-                            cin.ignore();
-                            getline(cin, name);
-                            if (validName(userName))
+                            // cin.ignore();
+                            getline(cin, userName);
+                            if (validName(userName) && checkName(userName))
                             {
                                 username[var] = userName;
                                 cout << "** Enter the updted password: ";
-                                cin.ignore();
+                                // cin.ignore();
                                 getline(cin, userPassword);
                                 if (validPasscode(userPassword))
                                 {
@@ -590,7 +598,7 @@ int main()
                             }
                             else
                             {
-                                cout << "** ! Username must consists of 8 characters !" << endl;
+                                cout << "** ! Username must consists of 3 letters and no digits!" << endl;
                                 cout << "** !! The User you entered is not registered !" << endl;
                             }
                         }
@@ -612,7 +620,7 @@ int main()
                     cout << "****************************************************************************************" << endl;
                     for (int i = 0; i <= index; i++)
                     {
-                        cout << "** " << i + 1 << "  ";
+                        cout << "** " << ID[i] << "  ";
                         cout << username[i] << "       ";
                         cout << passwords[i] << "       ";
                         cout << NIC[i] << "       ";
@@ -880,6 +888,17 @@ bool validName(string str)
     {
         return false;
     }
+}
+// Function for Name Validation
+bool checkName(string str)
+{
+    // bool check=false;
+    for (int i = 0; i < str.length(); i++)
+    {
+        if (!(str[i] >= 'A' && str[i] <= 'Z' || str[i] >= 'a' && str[i] <= 'z'))
+            return false;
+    }
+    return true;
 }
 // Function for Password Validation
 bool validPasscode(string password)
